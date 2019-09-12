@@ -17,8 +17,9 @@ function find() {
 function findById(id) {
   return db("schemes")
     .where({ id: id })
-    .then(schemes => {
-      return schemes;
+    .then(scheme => {
+      console.log(scheme);
+      return scheme;
     });
 }
 // works and returns scheme by specific ID
@@ -35,30 +36,25 @@ function findSteps(id) {
 }
 // works and finds step by id within the schemes
 
-function add(scheme) {
-  const addScheme = req.body;
+function add(schemeData) {
   return db("schemes")
-    .insert(addScheme, "scheme")
-    .then(([scheme]) => {
-      db("schemes")
-        .where({ id })
-        .then(scheme => {
-          return scheme;
-        });
+    .insert(schemeData)
+    .then(schemeID => {
+      console.log(schemeID);
+      return findById(schemeID[0]); // schemeID will only return the new scheme ID you need to call fuction
     });
 }
-// does not work
+// works
 
 function update(changes, id) {
-  const changes = req.body;
   return db("schemes")
-    .where({ scheme_id: id })
+    .where({ id: id })
     .update(changes)
-    .then(scheme => {
-      return scheme;
+    .then(count => {
+      return findById(id);
     });
 }
-// does not work
+// works
 
 function remove(id) {
   return db("schemes")
